@@ -1,4 +1,6 @@
 import { loginPage } from "./login.mjs";
+import { saveToLs } from "./handleLS.mjs";
+import { clearLS } from "./handleLS.mjs";
 import { showRightView } from "../script.js";
 // Function to create a card column
 export function renderCardColumn(title) {
@@ -20,6 +22,11 @@ export function renderCardColumn(title) {
   addCardBtn.classList.add("add-card-btn");
   addCardBtn.textContent = "Lägg till ett kort";
   column.appendChild(addCardBtn);
+
+  addCardBtn.addEventListener("click", function()
+  {
+    createCard(cardBody);
+  })
 
   return column;
 }
@@ -57,4 +64,40 @@ export function renderMainBoard(username) {
   mainContainer.appendChild(p);
 
   root.appendChild(mainContainer);
+}
+
+export function createCard(column)
+{
+  let cardInput = document.createElement("div");
+  cardInput.className = "cardInput";
+  cardInput.contentEditable = "true";
+  
+  let saveCardBtn = document.createElement("button");
+  saveCardBtn.className = "saveCardBtn";
+  saveCardBtn.innerText = "Spara";
+
+  let removeCardBtn = document.createElement("button");
+  removeCardBtn.className = "removeCardBtn";
+  removeCardBtn.innerText = "Radera";
+
+  let buttonsdiv = document.createElement("div");
+  buttonsdiv.className = "buttonsdiv";
+  buttonsdiv.appendChild(saveCardBtn);
+  buttonsdiv.appendChild(removeCardBtn);
+
+  column.appendChild(cardInput);
+  column.appendChild(buttonsdiv);
+
+  let cardText = cardInput.innerText;
+  saveCardBtn.addEventListener("click", function()
+  {
+    saveToLs(column, cardText);
+  })
+
+  removeCardBtn.addEventListener("click", function()
+  {
+    cardInput.remove();
+    buttonsdiv.remove();
+    clearLS(column, cardText);
+  })
 }

@@ -73,4 +73,14 @@
     background-color: #005a8c;
 }
 
+.cardInput
+{
+    border: 1px, solid, black;
+}
 
+.buttonsdiv
+{
+    width: fit-content;
+    padding-top: 1px;
+    padding-bottom: 5px;
+}
