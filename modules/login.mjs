@@ -1,4 +1,6 @@
 //Inloggningsfunktionen
+import { renderMainBoard } from "./cards.mjs";
+
 export function loginPage() {
 
     //Användarnamn och lösenord för inloggning
@@ -67,9 +69,7 @@ export function loginPage() {
             //Sparar den inloggade användaren i localStorage
             localStorage.setItem('loggedInUser', username);
 
-            let p = document.createElement('p');
-            p.textContent = `Välkommen ${username}! Du är nu inloggad`;
-            loginContainer.appendChild(p);
+            renderMainBoard(username);
 
         //Om användarnamn och lösenord inte finns i arrayerna visas ett felmeddelande
         } else {

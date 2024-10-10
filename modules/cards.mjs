@@ -1,3 +1,5 @@
+import { loginPage } from "./login.mjs";
+import {showRightView} from "../script.js";
 // Function to create a card column
 export function renderCardColumn(title) {
     const column = document.createElement('div');
@@ -20,14 +22,30 @@ export function renderCardColumn(title) {
     column.appendChild(addCardBtn);
 
 
+
+
+    return column;    
 }
 
-return coulmn;
+//Add logout button
+const logoutButton = document.createElement('button');
+logoutButton.type = 'button';
+logoutButton.textContent = 'Logga ut';
+
+logoutButton.addEventListener('click', function () {
+    localStorage.removeItem('loggedInUser');
+    showRightView();
+});
+
+
 
 // Function to create main board with all columns
-export function renderMainBoard() {
+export function renderMainBoard(username) {
     const root = document.getElementById('root');
-
+    root.innerHTML = '';
+    
+    let p = document.createElement('p');
+    p.textContent = `Välkommen ${username}! Du är nu inloggad`;
     // Create main container
     const mainContainer = document.createElement('div');
     mainContainer.classList.add('main-container');
@@ -39,6 +57,11 @@ export function renderMainBoard() {
 
         mainContainer.appendChild(column);
     });
+
+    
+
+    mainContainer.appendChild(logoutButton)
+    mainContainer.appendChild(p);
 
     root.appendChild(mainContainer);
 }
