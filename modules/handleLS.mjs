@@ -5,7 +5,7 @@ export const getDataFromLS = function (column) {
 };
 
 // Save to LS
-function saveToLs(column, item) {
+export function saveToLs(column, item) {
   const existingItems = getDataFromLS(column);
   
   if (existingItems.length > 0) {
@@ -21,7 +21,7 @@ function saveToLs(column, item) {
 }
 
 // Remove specific item from LS
-function clearLS(column, item) {
+export function clearLS(column, item) {
   const existingItems = getDataFromLS(column);
 
   if (existingItems.length > 0) {
