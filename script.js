@@ -1,3 +1,9 @@
-import { loginPage } from './modules/login.mjs';
+import { loginPage } from "./modules/login.mjs";
+import { renderMainBoard } from "./modules/cards.mjs";
 
-loginPage();
+export function showRightView() {
+  let loggedInUser = localStorage.getItem("loggedInUser");
+  localStorage.getItem("loggedInUser") ? renderMainBoard() : loginPage();
+  console.log(loggedInUser);
+}
+showRightView();
