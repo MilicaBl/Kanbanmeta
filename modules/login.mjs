@@ -60,6 +60,15 @@ export function loginPage() {
         //Kollar om användarnamn och lösenord finns i arrayerna usernames och passwords
         const userIndex = usernames.indexOf(username);
         
+        //Tar bort felmeddelande om det redan finns ett
+        const errorMessage = document.getElementById('error-message');
+
+        if (errorMessage) {
+
+            errorMessage.remove();
+
+        }
+        
         //Om användarnamn och lösenord finns i arrayerna visas en välkomsttext
         if (userIndex !== -1 && passwords[userIndex] === password) {
 
@@ -75,6 +84,7 @@ export function loginPage() {
         } else {
 
             let p = document.createElement('p');
+            p.id = 'error-message';
             p.textContent = 'Fel användarnamn eller lösenord';
             loginContainer.appendChild(p);
 
