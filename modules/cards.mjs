@@ -1,5 +1,5 @@
 // Function to create a card column
-export function createCardColumn(title) {
+export function renderCardColumn(title) {
     const column = document.createElement('div');
     column.classList.add('card-column');
 
@@ -25,7 +25,7 @@ export function createCardColumn(title) {
 return coulmn;
 
 // Function to create main board with all columns
-export function createMainBoard() {
+export function renderMainBoard() {
     const root = document.getElementById('root');
 
     // Create main container
@@ -35,7 +35,7 @@ export function createMainBoard() {
     // Create each card folumn
     const columns = ['To do', 'Doing', 'Testing', 'Done'];
     columns.forEach(title => {
-        const column = createCardColumn(title);
+        const column = renderCardColumn(title);
 
         mainContainer.appendChild(column);
     });
