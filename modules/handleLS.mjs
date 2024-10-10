@@ -1,13 +1,14 @@
 // Get data from LS
 export const getDataFromLS = function (column) {
-  const columnData = localStorage.getItem(`"${column}"`);
+  const columnData = localStorage.getItem(`${column}`);
   return columnData ? JSON.parse(columnData) : [];
 };
 
 // Save to LS
 export function saveToLs(column, item) {
+  console.log("column", column, "item", item)
   const existingItems = getDataFromLS(column);
-  
+
   if (existingItems.length > 0) {
     // Lägg till det nya objektet till den befintliga datan
     existingItems.push(item);

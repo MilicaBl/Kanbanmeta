@@ -1,7 +1,7 @@
 import { loginPage } from "./login.mjs";
-import { saveToLs } from "./handleLS.mjs";
-import { clearLS } from "./handleLS.mjs";
+import { saveToLs, getDataFromLS, clearLS } from "./handleLS.mjs";
 import { showRightView } from "../script.js";
+
 // Function to create a card column
 export function renderCardColumn(title) {
   const column = document.createElement("div");
@@ -17,16 +17,17 @@ export function renderCardColumn(title) {
   cardBody.classList.add("card-body");
   column.appendChild(cardBody);
 
+  getSavedCards(title, cardBody);
+
   // Add card button
   const addCardBtn = document.createElement("button");
   addCardBtn.classList.add("add-card-btn");
   addCardBtn.textContent = "Lägg till ett kort";
   column.appendChild(addCardBtn);
 
-  addCardBtn.addEventListener("click", function()
-  {
-    createCard(cardBody);
-  })
+  addCardBtn.addEventListener("click", function () {
+    createCard(cardBody, title);
+  });
 
   return column;
 }
@@ -66,12 +67,12 @@ export function renderMainBoard(username) {
   root.appendChild(mainContainer);
 }
 
-export function createCard(column)
-{
+export function createCard(column, title) {
   let cardInput = document.createElement("div");
   cardInput.className = "cardInput";
   cardInput.contentEditable = "true";
-  
+  column.appendChild(cardInput);
+
   let saveCardBtn = document.createElement("button");
   saveCardBtn.className = "saveCardBtn";
   saveCardBtn.innerText = "Spara";
@@ -82,22 +83,37 @@ export function createCard(column)
 
   let buttonsdiv = document.createElement("div");
   buttonsdiv.className = "buttonsdiv";
+
   buttonsdiv.appendChild(saveCardBtn);
   buttonsdiv.appendChild(removeCardBtn);
 
   column.appendChild(cardInput);
   column.appendChild(buttonsdiv);
 
-  let cardText = cardInput.innerText;
-  saveCardBtn.addEventListener("click", function()
-  {
-    saveToLs(column, cardText);
-  })
-
-  removeCardBtn.addEventListener("click", function()
-  {
+  saveCardBtn.addEventListener("click", function () {
+    let cardText = cardInput.innerText;
+    saveToLs(title, cardText);
     cardInput.remove();
     buttonsdiv.remove();
-    clearLS(column, cardText);
-  })
+    getSavedCards(title, column);
+  });
+
+  removeCardBtn.addEventListener("click", function () {
+    clearLS(title, cardInput.innerText);
+    cardInput.remove();
+    buttonsdiv.remove();
+  });
+}
+
+function getSavedCards(title, cardBody) {
+  let savedCards = getDataFromLS(title);
+  cardBody.innerHTML = "";
+  savedCards.forEach((card) => {
+    let cardBox = document.createElement("div");
+    let savedCardText = document.createElement("p");
+    savedCardText.innerText = card;
+    console.log(card);
+    cardBox.appendChild(savedCardText);
+    cardBody.appendChild(cardBox);
+  });
 }
