@@ -26,9 +26,8 @@ export function clearLS(column, item) {
   const existingItems = getDataFromLS(column);
 
   if (existingItems.length > 0) {
-    const updatedItems = existingItems.filter((card) => card !== item);
+    const updatedItems = existingItems.filter((card) => card.id !== item.id);
     localStorage.setItem(column, JSON.stringify(updatedItems));
-    console.log(`"item ${item} har tagits bort från ${column}"`);
   } else {
     console.log("Inga items hittade i ls för denna kolumn");
   }

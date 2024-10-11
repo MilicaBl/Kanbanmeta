@@ -77,31 +77,26 @@ export function createCard(column, title) {
   saveCardBtn.className = "saveCardBtn";
   saveCardBtn.innerText = "Spara";
 
-  let removeCardBtn = document.createElement("button");
-  removeCardBtn.className = "removeCardBtn";
-  removeCardBtn.innerText = "Radera";
+  // let buttonsdiv = document.createElement("div");
+  // buttonsdiv.className = "buttonsdiv";
 
-  let buttonsdiv = document.createElement("div");
-  buttonsdiv.className = "buttonsdiv";
+  // buttonsdiv.appendChild(saveCardBtn);
 
-  buttonsdiv.appendChild(saveCardBtn);
-  buttonsdiv.appendChild(removeCardBtn);
-
-  column.appendChild(cardInput);
-  column.appendChild(buttonsdiv);
+  column.append(cardInput, saveCardBtn);
+  // column.appendChild(buttonsdiv);
 
   saveCardBtn.addEventListener("click", function () {
+    let cardId = Date.now();
+    console.log(cardId);
     let cardText = cardInput.innerText;
-    saveToLs(title, cardText);
+    let cardInfo={
+      text:cardText,
+      id:cardId
+    }
+    saveToLs(title, cardInfo);
     cardInput.remove();
-    buttonsdiv.remove();
+    // buttonsdiv.remove();
     getSavedCards(title, column);
-  });
-
-  removeCardBtn.addEventListener("click", function () {
-    clearLS(title, cardInput.innerText);
-    cardInput.remove();
-    buttonsdiv.remove();
   });
 }
 
@@ -110,10 +105,17 @@ function getSavedCards(title, cardBody) {
   cardBody.innerHTML = "";
   savedCards.forEach((card) => {
     let cardBox = document.createElement("div");
+    let removeCardBtn = document.createElement("button");
+    removeCardBtn.className = "removeCardBtn";
+    removeCardBtn.innerText = "Radera";
     let savedCardText = document.createElement("p");
-    savedCardText.innerText = card;
-    console.log(card);
-    cardBox.appendChild(savedCardText);
+    savedCardText.innerText = card.text;
+    console.log(card)
+    removeCardBtn.addEventListener("click", function () {
+      clearLS(title, card);
+      renderMainBoard(title);
+    });
+    cardBox.append(savedCardText, removeCardBtn);
     cardBody.appendChild(cardBox);
   });
 }
