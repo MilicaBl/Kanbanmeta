@@ -1,6 +1,6 @@
-import { loginPage } from "./login.mjs";
 import { saveToLs, getDataFromLS, clearLS } from "./handleLS.mjs";
 import { showRightView } from "../script.js";
+import { allowDrop, drag, drop } from "./dragAndDrop.mjs"
 
 // Function to create a card column
 export function renderCardColumn(title) {
@@ -18,7 +18,8 @@ export function renderCardColumn(title) {
   column.appendChild(cardBody);
 
   getSavedCards(title, cardBody);
-
+  column.addEventListener("dragover", allowDrop);
+  column.addEventListener("drop", drop);
   // Add card button
   const addCardBtn = document.createElement("button");
   addCardBtn.classList.add("add-card-btn");
@@ -89,10 +90,10 @@ export function createCard(column, title) {
     let cardId = Date.now();
     console.log(cardId);
     let cardText = cardInput.innerText;
-    let cardInfo={
-      text:cardText,
-      id:cardId
-    }
+    let cardInfo = {
+      text: cardText,
+      id: cardId
+    };
     saveToLs(title, cardInfo);
     cardInput.remove();
     // buttonsdiv.remove();
@@ -110,12 +111,16 @@ function getSavedCards(title, cardBody) {
     removeCardBtn.innerText = "Radera";
     let savedCardText = document.createElement("p");
     savedCardText.innerText = card.text;
-    console.log(card)
+    console.log(card.id);
     removeCardBtn.addEventListener("click", function () {
       clearLS(title, card);
       renderMainBoard(title);
     });
+    cardBox.id = card.id;
+    console.log(cardBox.id);
     cardBox.append(savedCardText, removeCardBtn);
+    cardBox.draggable = "true";
+    cardBox.addEventListener("dragstart", drag);
     cardBody.appendChild(cardBox);
   });
 }
