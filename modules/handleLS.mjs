@@ -11,6 +11,11 @@ export function saveToLs(column, item) {
 
   if (existingItems.length > 0) {
     // Lägg till det nya objektet till den befintliga datan
+    let existingItem = existingItems.find((card) => card.id === item.id);
+    if (existingItem) {
+      console.log("Item finns redan, uppdaterar befintlig post.");
+      existingItem.text = item.text;
+    } else 
     existingItems.push(item);
     console.log("Datan som sparades:" + existingItems);
   } else {
