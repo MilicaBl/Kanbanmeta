@@ -106,19 +106,36 @@ function getSavedCards(title, cardBody) {
   cardBody.innerHTML = "";
   savedCards.forEach((card) => {
     let cardBox = document.createElement("div");
-    let removeCardBtn = document.createElement("button");
-    removeCardBtn.className = "removeCardBtn";
-    removeCardBtn.innerText = "Radera";
+    let removeCardIcon = document.createElement("i");
+    removeCardIcon.className = "fa-solid fa-trash-can";
+
+    let editTextIcon = document.createElement("i");
+    editTextIcon.className = "fa-solid fa-pen-to-square";
+  
     let savedCardText = document.createElement("p");
     savedCardText.innerText = card.text;
     console.log(card.id);
-    removeCardBtn.addEventListener("click", function () {
+    removeCardIcon.addEventListener("click", function () {
       clearLS(title, card);
       renderMainBoard(title);
     });
+
+    editTextIcon.addEventListener("click", function () {
+      savedCardText.contentEditable = "true";
+      savedCardText.focus();
+    });
+
+    savedCardText.addEventListener("blur", function () {
+      savedCardText.contentEditable = "false";
+      let updatedCard = {
+        text: savedCardText.innerText,
+        id: card.id
+      };
+      saveToLs(title, updatedCard);
+    });
     cardBox.id = card.id;
     console.log(cardBox.id);
-    cardBox.append(savedCardText, removeCardBtn);
+    cardBox.append(savedCardText, removeCardIcon, editTextIcon);
     cardBox.draggable = "true";
     cardBox.addEventListener("dragstart", drag);
     cardBody.appendChild(cardBox);
