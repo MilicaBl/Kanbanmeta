@@ -144,6 +144,7 @@ function getSavedCards(title, cardBody) {
         id: card.id
       };
       saveToLs(title, updatedCard);
+      card=updatedCard;
     });
 
     cardBox.id = card.id;
