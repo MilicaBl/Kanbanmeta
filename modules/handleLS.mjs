@@ -6,7 +6,7 @@ export const getDataFromLS = function (column) {
 
 // Save to LS
 export function saveToLs(column, item) {
-  console.log("column", column, "item", item)
+  console.log("column", column, "item", item);
   const existingItems = getDataFromLS(column);
 
   if (existingItems.length > 0) {
@@ -15,8 +15,7 @@ export function saveToLs(column, item) {
     if (existingItem) {
       console.log("Item finns redan, uppdaterar befintlig post.");
       existingItem.text = item.text;
-    } else 
-    existingItems.push(item);
+    } else existingItems.push(item);
     console.log("Datan som sparades:" + existingItems);
   } else {
     console.log("Inget sparat, skapar ny post.");
@@ -28,6 +27,7 @@ export function saveToLs(column, item) {
 
 // Remove specific item from LS
 export function clearLS(column, item) {
+  console.log(column, item);
   const existingItems = getDataFromLS(column);
 
   if (existingItems.length > 0) {
