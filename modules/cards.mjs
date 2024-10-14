@@ -1,7 +1,8 @@
 import { saveToLs, getDataFromLS, clearLS } from "./handleLS.mjs";
 import { showRightView } from "../script.js";
-import { allowDrop, drag, drop } from "./dragAndDrop.mjs"
+import { allowDrop, drag, drop } from "./dragAndDrop.mjs";
 
+let userName = localStorage.getItem("loggedInUser");
 // Function to create a card column
 export function renderCardColumn(title) {
   const column = document.createElement("div");
@@ -19,7 +20,9 @@ export function renderCardColumn(title) {
 
   getSavedCards(title, cardBody);
   column.addEventListener("dragover", allowDrop);
-  column.addEventListener("drop", drop);
+  column.addEventListener("drop", function (element) {
+    drop(element, title);
+  });
   // Add card button
   const addCardBtn = document.createElement("button");
   addCardBtn.classList.add("add-card-btn");
@@ -44,12 +47,13 @@ logoutButton.addEventListener("click", function () {
 });
 
 // Function to create main board with all columns
-export function renderMainBoard(username) {
+export function renderMainBoard() {
+  console.log("körs");
   const root = document.getElementById("root");
   root.innerHTML = "";
 
   let p = document.createElement("p");
-  p.textContent = `Välkommen ${username}! Du är nu inloggad`;
+  p.textContent = `Välkommen ${userName}! Du är nu inloggad`;
   // Create main container
   const mainContainer = document.createElement("div");
   mainContainer.classList.add("main-container");
@@ -94,6 +98,7 @@ export function createCard(column, title) {
       text: cardText,
       id: cardId
     };
+
     saveToLs(title, cardInfo);
     cardInput.remove();
     // buttonsdiv.remove();
@@ -111,10 +116,10 @@ function getSavedCards(title, cardBody) {
 
     let editTextIcon = document.createElement("i");
     editTextIcon.className = "fa-solid fa-pen-to-square";
-  
+
     let savedCardText = document.createElement("p");
     savedCardText.innerText = card.text;
-    console.log(card.id);
+    console.log(card);
     removeCardIcon.addEventListener("click", function () {
       clearLS(title, card);
       renderMainBoard(title);
@@ -137,7 +142,9 @@ function getSavedCards(title, cardBody) {
     console.log(cardBox.id);
     cardBox.append(savedCardText, removeCardIcon, editTextIcon);
     cardBox.draggable = "true";
-    cardBox.addEventListener("dragstart", drag);
+    cardBox.addEventListener("dragstart", function (event) {
+      drag(event, title, card);
+    });
     cardBody.appendChild(cardBox);
   });
 }
