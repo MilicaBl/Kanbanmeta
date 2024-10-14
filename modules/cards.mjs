@@ -109,8 +109,15 @@ export function createCard(column, title) {
 function getSavedCards(title, cardBody) {
   let savedCards = getDataFromLS(title);
   cardBody.innerHTML = "";
+
   savedCards.forEach((card) => {
     let cardBox = document.createElement("div");
+    cardBox.classList.add("card");
+
+    // Icon container
+    let cardIcons = document.createElement("div");
+    cardIcons.classList.add("card-icons");
+
     let removeCardIcon = document.createElement("i");
     removeCardIcon.className = "fa-solid fa-trash-can";
 
@@ -119,7 +126,7 @@ function getSavedCards(title, cardBody) {
 
     let savedCardText = document.createElement("p");
     savedCardText.innerText = card.text;
-    console.log(card);
+
     removeCardIcon.addEventListener("click", function () {
       clearLS(title, card);
       renderMainBoard(title);
@@ -138,13 +145,18 @@ function getSavedCards(title, cardBody) {
       };
       saveToLs(title, updatedCard);
     });
+
     cardBox.id = card.id;
-    console.log(cardBox.id);
-    cardBox.append(savedCardText, removeCardIcon, editTextIcon);
     cardBox.draggable = "true";
     cardBox.addEventListener("dragstart", function (event) {
       drag(event, title, card);
     });
+
+  
+    cardIcons.append(removeCardIcon, editTextIcon);
+    
+    cardBox.append(savedCardText, cardIcons);
+
     cardBody.appendChild(cardBox);
   });
 }
