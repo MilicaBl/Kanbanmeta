@@ -138,6 +138,24 @@
     background-color: #519839;
 }
 
+.saveCancel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -15px;
+  }
+
+  .fa-xmark {
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: -7px;
+    color: red;
+  }
+
+  .fa-xmark:hover {
+    color: rgb(161, 30, 30);
+  }
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .main-container {
@@ -147,4 +165,5 @@
         width: 100%;
         margin-bottom: 20px;
     }
+
 }

@@ -73,6 +73,7 @@ export function renderMainBoard() {
 }
 
 export function createCard(column, title) {
+  
   let cardInput = document.createElement("div");
   cardInput.className = "cardInput";
   cardInput.contentEditable = "true";
@@ -82,28 +83,70 @@ export function createCard(column, title) {
   saveCardBtn.className = "saveCardBtn";
   saveCardBtn.innerText = "Spara";
 
+  let cancelIcon = document.createElement("i");
+  cancelIcon.className = "fa-solid fa-xmark";
+  
+  let saveAndCancelButtons = document.createElement("div");
+  saveAndCancelButtons.className = "saveCancel";
+
+  saveAndCancelButtons.appendChild(saveCardBtn);
+  saveAndCancelButtons.appendChild(cancelIcon);
+
   // let buttonsdiv = document.createElement("div");
   // buttonsdiv.className = "buttonsdiv";
 
   // buttonsdiv.appendChild(saveCardBtn);
 
-  column.append(cardInput, saveCardBtn);
+  column.append(cardInput, saveAndCancelButtons);
   // column.appendChild(buttonsdiv);
+
+  cancelIcon.addEventListener("click", function () {
+    cardInput.remove();
+    saveAndCancelButtons.remove();
+  });
 
   saveCardBtn.addEventListener("click", function () {
     let cardId = Date.now();
     console.log(cardId);
-    let cardText = cardInput.innerText;
-    let cardInfo = {
+    let cardText = cardInput.innerText.trim();
+
+    // checking so the card text is not empty
+    if (cardText !== "") {
+
+      let cardInfo  = {
       text: cardText,
       id: cardId
+
     };
 
     saveToLs(title, cardInfo);
     cardInput.remove();
     // buttonsdiv.remove();
     getSavedCards(title, column);
+    }
   });
+
+cardInput.addEventListener("keydown", function (event) {
+  
+  if (event.key === "Enter") {
+    let cardId = Date.now();
+    let cardText = cardInput.innerText.trim();
+    // checking so the card text is not empty
+    if (cardText !== "") {
+
+      let cardInfo = {
+        text: cardText,
+        id: cardId
+
+      };
+
+      saveToLs(title, cardInfo);
+      cardInput.remove(); 
+      getSavedCards(title, column);
+    }
+  }
+});
+
 }
 
 function getSavedCards(title, cardBody) {
