@@ -16,6 +16,23 @@ export function loginPage() {
 
   const header = document.createElement("h1");
   header.textContent = "Trello v2";
+  header.id = "header";
+
+  const slogan = document.createElement("h2");
+  slogan.textContent = "Organisera arbetsdagen";
+  slogan.id = "slogan";
+
+  const todo = document.createElement("img");
+  todo.src = "/bilder/todolist.png";
+  todo.id = "todo-img";
+
+  const loginText = document.createElement("p");
+  loginText.textContent = "Logga in";
+  loginText.id = "login-text";
+
+  const loginInfo = document.createElement("p");
+  loginInfo.textContent = "Fortsätt till Trello v2";
+  loginInfo.id = "login-info";
 
   const form = document.createElement("form");
 
@@ -34,15 +51,16 @@ export function loginPage() {
   const loginButton = document.createElement("button");
   loginButton.type = "submit";
   loginButton.textContent = "Logga in";
+  loginButton.id = "login-button";
 
   form.appendChild(usernameInput);
-  form.appendChild(document.createElement("br"));
-  form.appendChild(document.createElement("br"));
   form.appendChild(passwordInput);
-  form.appendChild(document.createElement("br"));
-  form.appendChild(document.createElement("br"));
   form.appendChild(loginButton);
 
+  loginContainer.appendChild(loginText);
+  loginContainer.appendChild(loginInfo);
+  loginContainer.appendChild(todo);
+  loginContainer.appendChild(slogan);
   loginContainer.appendChild(header);
   loginContainer.appendChild(form);
 
