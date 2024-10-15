@@ -38,6 +38,8 @@
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     width: 300px;
+    min-width: 0;
+    max-width: 25%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     padding: 10px;
     display: flex;
@@ -176,6 +178,7 @@
     }
     .card-column {
         width: 100%;
+        max-width: none;
         margin-bottom: 20px;
     }
 
