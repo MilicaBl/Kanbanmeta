@@ -76,7 +76,14 @@
     display: flex;
     justify-content: space-between;
     min-height: 60px;
+    max-width: 100%;
     align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.card * {
+    flex-shrink: 1;
+    max-width: 100%;
 }
 
 .card-icons {
