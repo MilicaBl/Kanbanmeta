@@ -52,6 +52,8 @@ export function renderMainBoard() {
   const root = document.getElementById("root");
   root.innerHTML = "";
 
+  let userName = localStorage.getItem("loggedInUser");
+  
   let p = document.createElement("p");
   p.textContent = `Välkommen ${userName}! Du är nu inloggad`;
   // Create main container
