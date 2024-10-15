@@ -104,6 +104,12 @@
     color: #333;
 }
 
+.card p {
+    overflow: hidden;
+    padding-right: 40px;
+    font-size: 20px;
+}
+
 .add-card-btn {
     background-color: #0079bf;
     color: white;
@@ -126,7 +132,7 @@
     border: 1px solid #ccc;
     border-radius: 3px;
     padding: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     min-height: 40px;
 }
 
