@@ -36,41 +36,44 @@ export function renderCardColumn(title) {
   return column;
 }
 
-//Add logout button
-const logoutButton = document.createElement("button");
-logoutButton.type = "button";
-logoutButton.textContent = "Logga ut";
-
-logoutButton.addEventListener("click", function () {
-  localStorage.removeItem("loggedInUser");
-  showRightView();
-});
-
-// Function to create main board with all columns
 export function renderMainBoard() {
   console.log("körs");
   const root = document.getElementById("root");
   root.innerHTML = "";
 
   let userName = localStorage.getItem("loggedInUser");
-  
+
+  const headerWrapper = document.createElement("div");
+  headerWrapper.classList.add("header");
+
   let p = document.createElement("p");
+  p.classList.add("welcome-text");
   p.textContent = `Välkommen ${userName}! Du är nu inloggad`;
-  // Create main container
+
+  const logoutButton = document.createElement("button");
+  logoutButton.type = "button";
+  logoutButton.classList.add("logout-btn");
+  logoutButton.textContent = "Logga ut";
+
+  logoutButton.addEventListener("click", function () {
+    localStorage.removeItem("loggedInUser");
+    showRightView();
+  });
+
+  headerWrapper.appendChild(p);
+  headerWrapper.appendChild(logoutButton);
+
+
   const mainContainer = document.createElement("div");
   mainContainer.classList.add("main-container");
 
-  // Create each card folumn
   const columns = ["To do", "Doing", "Testing", "Done"];
   columns.forEach((title) => {
     const column = renderCardColumn(title);
-
     mainContainer.appendChild(column);
   });
 
-  mainContainer.appendChild(logoutButton);
-  mainContainer.appendChild(p);
-
+  root.appendChild(headerWrapper);
   root.appendChild(mainContainer);
 }
 
