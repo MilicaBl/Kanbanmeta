@@ -44,7 +44,7 @@ export function renderMainBoard() {
   let userName = localStorage.getItem("loggedInUser");
 
   const headerWrapper = document.createElement("div");
-  headerWrapper.classList.add("header");
+  headerWrapper.classList.add("header-wrapper");
 
   let p = document.createElement("p");
   p.classList.add("welcome-text");
