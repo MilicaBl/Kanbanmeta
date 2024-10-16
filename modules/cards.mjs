@@ -1,8 +1,7 @@
-import { saveToLs, getDataFromLS, clearLS } from "./handleLS.mjs";
+import { saveToLs, getDataFromLS, clearLS, getLoggedInUser } from "./handleLS.mjs";
 import { showRightView } from "../script.js";
 import { allowDrop, drag, drop } from "./dragAndDrop.mjs";
 
-let userName = localStorage.getItem("loggedInUser");
 // Function to create a card column
 export function renderCardColumn(title) {
   const column = document.createElement("div");
@@ -41,10 +40,14 @@ export function renderMainBoard() {
   const root = document.getElementById("root");
   root.innerHTML = "";
 
-  let userName = localStorage.getItem("loggedInUser");
+
 
   const headerWrapper = document.createElement("div");
   headerWrapper.classList.add("header-wrapper");
+
+
+  let userName = getLoggedInUser()
+  
 
   let p = document.createElement("p");
   p.classList.add("welcome-text");
