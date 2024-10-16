@@ -244,7 +244,7 @@ body {
 }
 
 .add-card-btn {
-    background-color: #0079bf;
+    background-color: darkblue;
     color: white;
     border: none;
     border-radius: 3px;
@@ -290,6 +290,42 @@ body {
     align-items: center;
     margin-top: -15px;
   }
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: darkblue;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+}
+
+.logout-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-left: auto;
+}
+
+.logout-btn:hover {
+    color: rgb(161, 30, 30);
+}
+
+.welcome-text {
+    font-size: 20px;
+    color: white;
+    font-weight: normal;
+    font-size: 22px;
+    margin-left: 20px;
+}
 
   .fa-xmark {
     cursor: pointer;
