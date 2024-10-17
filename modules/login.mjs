@@ -1,104 +1,87 @@
 //Inloggningsfunktionen
 import { showRightView } from "../script.js";
-// import { renderMainBoard } from "./cards.mjs";
 
+function createLoginForm() {
+  const form = document.createElement("form");
+  const usernameInput = createInput("text", "Användarnamn", "username");
+  const passwordInput = createInput("password", "Lösenord", "password");
+  const loginButton = createButton("Logga in", "login-button");
+  form.append(usernameInput, passwordInput, loginButton);
+  return form;
+}
+function createInput(type, placeholder, id) {
+  const input = document.createElement("input");
+  input.type = type;
+  input.placeholder = placeholder;
+  input.id = id;
+  input.required = true;
+  return input;
+}
+function createButton(text, id) {
+  const button = document.createElement("button");
+  button.type = "submit";
+  button.textContent = text;
+  button.id = id;
+  return button;
+}
+function createElement(tag, id, content = "") {
+  const element = document.createElement(tag);
+  element.id = id;
+  if (content) element.textContent = content;
+  return element;
+}
 export function loginPage() {
-  //Användarnamn och lösenord för inloggning
+  // Usernames and passwords for login
   const usernames = ["MAX", "VILLIAM", "ADAM", "MILICA", "JANNE"];
   const passwords = ["1234", "1234", "1234", "1234", "1234"];
 
-  //Hämtar root-elementet och tar bort allt innehåll i root
+  // Get the root element and clear its content
   const root = document.getElementById("root");
   root.innerHTML = "";
 
-  //Skapar en container för inloggningsformuläret, samt html-elementen för inloggningsformuläret
-  const loginContainer = document.createElement("div");
-  loginContainer.id = "login-container";
-
-  const header = document.createElement("h1");
-  header.textContent = "Trello v2";
-  header.id = "header";
-
-  const slogan = document.createElement("h2");
-  slogan.textContent = "Organisera arbetsdagen";
-  slogan.id = "slogan";
-
-  const todo = document.createElement("img");
+  // Create a container for the login form and the HTML elements for the login form
+  const loginContainer = createElement("div", "login-container");
+  const header = createElement("h1", "header", "Trello v2");
+  const slogan = createElement("h2", "slogan", "Organisera arbetsdagen");
+  const todo = createElement("img", "todo-img");
   todo.src = "/bilder/todolist.png";
-  todo.id = "todo-img";
+  const loginText = createElement("p", "login-text", "Logga in");
+  const loginInfo = createElement("p", "login-info", "Fortsätt till Trello v2");
+  const form = createLoginForm();
 
-  const loginText = document.createElement("p");
-  loginText.textContent = "Logga in";
-  loginText.id = "login-text";
-
-  const loginInfo = document.createElement("p");
-  loginInfo.textContent = "Fortsätt till Trello v2";
-  loginInfo.id = "login-info";
-
-  const form = document.createElement("form");
-
-  const usernameInput = document.createElement("input");
-  usernameInput.type = "text";
-  usernameInput.placeholder = "Användarnamn";
-  usernameInput.id = "username";
-  usernameInput.required = true;
-
-  const passwordInput = document.createElement("input");
-  passwordInput.type = "password";
-  passwordInput.placeholder = "Lösenord";
-  passwordInput.id = "password";
-  passwordInput.required = true;
-
-  const loginButton = document.createElement("button");
-  loginButton.type = "submit";
-  loginButton.textContent = "Logga in";
-  loginButton.id = "login-button";
-
-  form.appendChild(usernameInput);
-  form.appendChild(passwordInput);
-  form.appendChild(loginButton);
-
-  loginContainer.appendChild(loginText);
-  loginContainer.appendChild(loginInfo);
-  loginContainer.appendChild(todo);
-  loginContainer.appendChild(slogan);
-  loginContainer.appendChild(header);
-  loginContainer.appendChild(form);
-
+  loginContainer.append(loginText, loginInfo, todo, slogan, header, form);
   root.appendChild(loginContainer);
 
-  //Eventlistener för inloggning av användare
+  // Event listener for user login
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    //Hämtar användarnamn och lösenord från formuläret
+    // Get the username and password from the form
     const username = document.getElementById("username").value.toUpperCase();
     const password = document.getElementById("password").value;
 
-    //Kollar om användarnamn och lösenord finns i arrayerna usernames och passwords
+    // Check if the username and password exist in the usernames and passwords arrays
     const userIndex = usernames.indexOf(username);
 
-    //Tar bort felmeddelande om det redan finns ett
+    // Remove the error message if it already exists
     const errorMessage = document.getElementById("error-message");
 
     if (errorMessage) {
-      errorMessage.remove();  
+      errorMessage.remove();
     }
 
-    //Om användarnamn och lösenord finns i arrayerna visas en välkomsttext
+    // If the username and password exist in the arrays, display a welcome message
     if (userIndex !== -1 && passwords[userIndex] === password) {
-      //Sparar ett unikt localStorage för varje användare
+      // Save a unique localStorage entry for each user
       localStorage.setItem(username, "loggedIn");
 
-      //Sparar den inloggade användaren i localStorage
+      // Save the logged-in user in localStorage
       localStorage.setItem("loggedInUser", username);
-        showRightView()
+      showRightView();
 
-      //Om användarnamn och lösenord inte finns i arrayerna visas ett felmeddelande
+      // If the username and password do not exist in the arrays, display an error message
     } else {
-      let p = document.createElement("p");
-      p.id = "error-message";
-      p.textContent = "Fel användarnamn eller lösenord";
+      const p = createElement("p", "error-message", "Fel användarnamn eller lösenord");
       loginContainer.appendChild(p);
     }
   });

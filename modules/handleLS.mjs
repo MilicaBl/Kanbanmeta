@@ -15,10 +15,9 @@ export function saveToLs (column, item) {
   const existingItems = getDataFromLS(column);
 
   if (existingItems.length > 0) {
-    // Lägg till det nya objektet till den befintliga datan
+    // Check if the item already exists
     let existingItem = existingItems.find((card) => card.id === item.id);
     if (existingItem) {
-      console.log("Item finns redan, uppdaterar befintlig post.");
       existingItem.text = item.text;
     } else existingItems.push(item);
     console.log("Datan som sparades:" + existingItems);
@@ -26,7 +25,7 @@ export function saveToLs (column, item) {
     console.log("Inget sparat, skapar ny post.");
     existingItems.push(item);
   }
-  // Spara tillbaka uppdaterad lista till localStorage
+  // Save an updated list to localStorage
   localStorage.setItem(key, JSON.stringify(existingItems));
 }
 
