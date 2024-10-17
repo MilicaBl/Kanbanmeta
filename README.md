@@ -29,4 +29,4 @@ or visit:
    - Add new tasks by clicking the "Add Card" button in any column.
    - Move tasks between columns using drag-and-drop.
    - Edit or delete tasks as needed.
-3. **Logout**: Click the "Logout" button to end your session.
+3. **Logout**: Click the "Logout" button.
