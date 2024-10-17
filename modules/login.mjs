@@ -44,7 +44,7 @@ export function loginPage() {
   const header = createElement("h1", "header", "Trello v2");
   const slogan = createElement("h2", "slogan", "Organisera arbetsdagen");
   const todo = createElement("img", "todo-img");
-  todo.src = "https://github.com/MilicaBl/Kanbanmeta/Bilder/todolist.png";
+  todo.src = "https://milicabl.github.io/Kanbanmeta/Bilder/todolist.png";
   const loginText = createElement("p", "login-text", "Logga in");
   const loginInfo = createElement("p", "login-info", "Fortsätt till Trello v2");
   const form = createLoginForm();
