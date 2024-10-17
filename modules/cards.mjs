@@ -40,14 +40,12 @@ export function renderMainBoard() {
   const root = document.getElementById("root");
   root.innerHTML = "";
 
-
-
   const headerWrapper = document.createElement("div");
   headerWrapper.classList.add("header-wrapper");
 
-
-  let userName = getLoggedInUser()
-  
+  let userName = getLoggedInUser();
+  //gör första bokstaven stor
+  userName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
 
   let p = document.createElement("p");
   p.classList.add("welcome-text");

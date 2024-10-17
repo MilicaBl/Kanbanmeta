@@ -4,7 +4,7 @@ import { showRightView } from "../script.js";
 
 export function loginPage() {
   //Användarnamn och lösenord för inloggning
-  const usernames = ["max", "villiam", "adam", "milica", "janne"];
+  const usernames = ["MAX", "VILLIAM", "ADAM", "MILICA", "JANNE"];
   const passwords = ["1234", "1234", "1234", "1234", "1234"];
 
   //Hämtar root-elementet och tar bort allt innehåll i root
@@ -72,7 +72,7 @@ export function loginPage() {
     e.preventDefault();
 
     //Hämtar användarnamn och lösenord från formuläret
-    const username = document.getElementById("username").value;
+    const username = document.getElementById("username").value.toUpperCase();
     const password = document.getElementById("password").value;
 
     //Kollar om användarnamn och lösenord finns i arrayerna usernames och passwords
@@ -82,7 +82,7 @@ export function loginPage() {
     const errorMessage = document.getElementById("error-message");
 
     if (errorMessage) {
-      errorMessage.remove();
+      errorMessage.remove();  
     }
 
     //Om användarnamn och lösenord finns i arrayerna visas en välkomsttext
@@ -93,7 +93,6 @@ export function loginPage() {
       //Sparar den inloggade användaren i localStorage
       localStorage.setItem("loggedInUser", username);
         showRightView()
-    //   renderMainBoard();
 
       //Om användarnamn och lösenord inte finns i arrayerna visas ett felmeddelande
     } else {
