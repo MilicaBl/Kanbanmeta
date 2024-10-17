@@ -2,74 +2,57 @@ import { saveToLs, getDataFromLS, clearLS, getLoggedInUser } from "./handleLS.mj
 import { showRightView } from "../script.js";
 import { allowDrop, drag, drop } from "./dragAndDrop.mjs";
 
+// Function to create element
+function createElement(tag, classes = [], content = "") {
+  const element = document.createElement(tag);
+  // The spread operator makes it possible to add more than one class at the same time (...classes)
+  if (classes.length) element.classList.add(...classes);
+  if (content) element.textContent = content;
+  return element;
+}
+
 // Function to create a card column
 export function renderCardColumn(title) {
-  const column = document.createElement("div");
-  column.classList.add("card-column");
+  const column = createElement("div", ["card-column"]);
+  const columnTitle = createElement("h2", [], title);
+  const cardBody = createElement("div", ["card-body"]);
 
-  // Column title
-  const columnTitle = document.createElement("h2");
-  columnTitle.textContent = title;
-  column.appendChild(columnTitle);
-
-  // Column body
-  const cardBody = document.createElement("div");
-  cardBody.classList.add("card-body");
-  column.appendChild(cardBody);
+  column.append(columnTitle, cardBody, createAddCardButton(cardBody, title));
 
   getSavedCards(title, cardBody);
-  column.addEventListener("dragover", allowDrop);
-  column.addEventListener("drop", function (element) {
-    drop(element, title);
-  });
-  // Add card button
-  const addCardBtn = document.createElement("button");
-  addCardBtn.classList.add("add-card-btn");
-  addCardBtn.textContent = "Lägg till ett kort";
-  column.appendChild(addCardBtn);
-
-  addCardBtn.addEventListener("click", function () {
-    createCard(cardBody, title);
-  });
+  setupDragAndDrop(column, title);
 
   return column;
 }
 
+// Add card button
+function createAddCardButton(cardBody, title) {
+  const addCardBtn = createElement("button",["add-card-btn"],"Lägg till ett kort");
+  addCardBtn.addEventListener("click", () => createCard(cardBody, title));
+
+  return addCardBtn;
+}
 export function renderMainBoard() {
-  console.log("körs");
   const root = document.getElementById("root");
   root.innerHTML = "";
 
-  const headerWrapper = document.createElement("div");
-  headerWrapper.classList.add("header-wrapper");
-
-  let userName = getLoggedInUser();
-  //gör första bokstaven stor
-  userName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
-
-  let p = document.createElement("p");
-  p.classList.add("welcome-text");
-  p.textContent = `Välkommen ${userName}! Du är nu inloggad`;
-
-  const logoutButton = document.createElement("button");
+  const headerWrapper = createElement("div",["header-wrapper"]);
+  const userName = capitalizeFirstLetter()
+  const welcomeText = createElement("p",["welcome-text"], `Välkommen ${userName}! Du är nu inloggad.`);
+ 
+  const logoutButton = createElement("button",["logout-btn"], "Logga ut");
   logoutButton.type = "button";
-  logoutButton.classList.add("logout-btn");
-  logoutButton.textContent = "Logga ut";
-
-  logoutButton.addEventListener("click", function () {
+  logoutButton.addEventListener("click",()=> {
     localStorage.removeItem("loggedInUser");
     showRightView();
   });
 
-  headerWrapper.appendChild(p);
-  headerWrapper.appendChild(logoutButton);
-
-
-  const mainContainer = document.createElement("div");
-  mainContainer.classList.add("main-container");
+  headerWrapper.append(welcomeText, logoutButton);
+ 
+  const mainContainer = createElement("div",["main-container"]);
 
   const columns = ["To do", "Doing", "Testing", "Done"];
-  columns.forEach((title) => {
+  columns.forEach(title => {
     const column = renderCardColumn(title);
     mainContainer.appendChild(column);
   });
@@ -78,135 +61,84 @@ export function renderMainBoard() {
   root.appendChild(mainContainer);
 }
 
+function capitalizeFirstLetter(){
+  let userName = getLoggedInUser();
+  return userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
+}
 export function createCard(column, title) {
-  
-  let cardInput = document.createElement("div");
-  cardInput.className = "cardInput";
+  const cardInput = createElement("div", ["cardInput"]);
   cardInput.contentEditable = "true";
-  column.appendChild(cardInput);
+  const saveCardBtn = createElement("button", ["saveCardBtn"], "Spara");
+  const cancelIcon = createElement("i", ["fa-solid", "fa-xmark"]);
+  const saveAndCancelButtons = createElement("div", ["saveCancel"]);
 
-  let saveCardBtn = document.createElement("button");
-  saveCardBtn.className = "saveCardBtn";
-  saveCardBtn.innerText = "Spara";
-
-  let cancelIcon = document.createElement("i");
-  cancelIcon.className = "fa-solid fa-xmark";
-  
-  let saveAndCancelButtons = document.createElement("div");
-  saveAndCancelButtons.className = "saveCancel";
-
-  saveAndCancelButtons.appendChild(saveCardBtn);
-  saveAndCancelButtons.appendChild(cancelIcon);
-
-  // let buttonsdiv = document.createElement("div");
-  // buttonsdiv.className = "buttonsdiv";
-
-  // buttonsdiv.appendChild(saveCardBtn);
-
+  saveAndCancelButtons.append(saveCardBtn, cancelIcon);
   column.append(cardInput, saveAndCancelButtons);
-  // column.appendChild(buttonsdiv);
 
-  cancelIcon.addEventListener("click", function () {
+  cancelIcon.addEventListener("click", () => {
     cardInput.remove();
     saveAndCancelButtons.remove();
   });
+  saveCardBtn.addEventListener("click", () =>
+    saveCard(cardInput, title, column)
+  );
+  cardInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") saveCard(cardInput, title, column);
+  });
+}
+// Function to saveCard
+function saveCard(cardInput, title, column) {
+  const cardText = cardInput.innerText.trim();
 
-  saveCardBtn.addEventListener("click", function () {
-    let cardId = Date.now();
-    console.log(cardId);
-    let cardText = cardInput.innerText.trim();
-
-    // checking so the card text is not empty
-    if (cardText !== "") {
-
-      let cardInfo  = {
-      text: cardText,
-      id: cardId
-
-    };
-
+  // checking so the card text is not empty
+  if (cardText !== "") {
+    let cardInfo = { text: cardText, id: Date.now() };
     saveToLs(title, cardInfo);
     cardInput.remove();
-    // buttonsdiv.remove();
     getSavedCards(title, column);
-    }
-  });
-
-cardInput.addEventListener("keydown", function (event) {
-  
-  if (event.key === "Enter") {
-    let cardId = Date.now();
-    let cardText = cardInput.innerText.trim();
-    // checking so the card text is not empty
-    if (cardText !== "") {
-
-      let cardInfo = {
-        text: cardText,
-        id: cardId
-
-      };
-
-      saveToLs(title, cardInfo);
-      cardInput.remove(); 
-      getSavedCards(title, column);
-    }
   }
-});
-
+}
+//Function to set up drag and drop events for a column
+function setupDragAndDrop(column, title) {
+  column.addEventListener("dragover", allowDrop);
+  column.addEventListener("drop", (element) => drop(element, title));
 }
 
+// Function to get saved cards and render them
 function getSavedCards(title, cardBody) {
-  let savedCards = getDataFromLS(title);
+  const savedCards = getDataFromLS(title);
   cardBody.innerHTML = "";
 
   savedCards.forEach((card) => {
-    let cardBox = document.createElement("div");
-    cardBox.classList.add("card");
+    const cardBox = createElement("div", ["card"]);
+    cardBox.id = card.id;
+    cardBox.draggable = "true";
 
+    const savedCardText = createElement("p", [], card.text);
     // Icon container
-    let cardIcons = document.createElement("div");
-    cardIcons.classList.add("card-icons");
+    const cardIcons = createElement("div", ["card-icons"]);
+    const removeCardIcon = createElement("i", ["fa-solid", "fa-trash-can"]);
+    const editTextIcon = createElement("i", ["fa-solid", "fa-pen-to-square"]);
 
-    let removeCardIcon = document.createElement("i");
-    removeCardIcon.className = "fa-solid fa-trash-can";
-
-    let editTextIcon = document.createElement("i");
-    editTextIcon.className = "fa-solid fa-pen-to-square";
-
-    let savedCardText = document.createElement("p");
-    savedCardText.innerText = card.text;
-
-    removeCardIcon.addEventListener("click", function () {
+    removeCardIcon.addEventListener("click", () => {
       clearLS(title, card);
       renderMainBoard(title);
     });
-
-    editTextIcon.addEventListener("click", function () {
+  
+    editTextIcon.addEventListener("click", () => {
       savedCardText.contentEditable = "true";
       savedCardText.focus();
     });
-
-    savedCardText.addEventListener("blur", function () {
-      savedCardText.contentEditable = "false";
-      let updatedCard = {
-        text: savedCardText.innerText,
-        id: card.id
-      };
-      saveToLs(title, updatedCard);
-      card=updatedCard;
-    });
-
-    cardBox.id = card.id;
-    cardBox.draggable = "true";
-    cardBox.addEventListener("dragstart", function (event) {
-      drag(event, title, card);
-    });
-
   
+    savedCardText.addEventListener("blur", () => {
+      savedCardText.contentEditable = "false";
+      const updatedCard = { text: savedCardText.innerText, id: card.id };
+      saveToLs(title, updatedCard);
+      card = updatedCard;
+    });
     cardIcons.append(removeCardIcon, editTextIcon);
-    
     cardBox.append(savedCardText, cardIcons);
-
+    cardBox.addEventListener("dragstart", (event) => drag(event, title, card));
     cardBody.appendChild(cardBox);
   });
 }
