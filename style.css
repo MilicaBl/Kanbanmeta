@@ -228,13 +228,13 @@ body {
 }
 
 .card-icons i {
-    color: #aaa;
+    color: rgb(108,99,255,255);
     cursor: pointer;
     transition: color 0.2s ease-in-out;
 }
 
 .card-icons i:hover {
-    color: #333;
+    color: rgb(147, 71, 246);
 }
 
 .card p {
@@ -244,7 +244,7 @@ body {
 }
 
 .add-card-btn {
-    background-color: darkblue;
+    background-color: rgb(0, 121, 191);
     color: white;
     border: none;
     border-radius: 3px;
@@ -257,7 +257,7 @@ body {
 }
 
 .add-card-btn:hover {
-    background-color: #005a8c;
+    background-color: rgb(0, 101, 161);
 }
 
 .cardInput {
@@ -296,13 +296,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: darkblue;
+    background-color: rgb(0, 121, 191);
     border-bottom: 1px solid #e0e0e0;
     position: relative;
 }
 
 .logout-btn {
-    background-color: red;
+    background-color: rgba(108,99,255,255);
     color: white;
     border: none;
     border-radius: 5px;
@@ -316,7 +316,7 @@ body {
 }
 
 .logout-btn:hover {
-    color: rgb(161, 30, 30);
+    background-color: rgb(156, 81, 255);
 }
 
 .welcome-text {
